@@ -68,9 +68,8 @@ You should have Arduino IDE Installed
         Installing ESP32 Add-on in Arduino IDE Windows, Mac OS X, Linux open preferences
     2. Enter ```https://dl.espressif.com/dl/package_esp32_index.json``` 
         into the “Additional Board Manager URLs” field then, click the “OK” button:
-        Note: if you already have the ESP32 boards URL, you can separate the URLs with a comma as follows:
-        ```https://dl.espressif.com/dl/package_esp32_index.json,
-        http://arduino.esp8266.com/stable/package_esp8266com_index.json```
+        Note: if you already have the ESP32 boards URL, you can separate the URLs with a comma(each board will go to neaw line) as follows:
+        ```https://dl.espressif.com/dl/package_esp32_index.json, http://arduino.esp8266.com/stable/package_esp8266com_index.json```
     
     3. Open the Boards Manager. Go to Tools > Board > Boards Manager…
     4. Search for ESP32 and press install button for the ESP32 by Espressif Systems“:
