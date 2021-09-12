@@ -36,45 +36,26 @@ void cmotsValues(){
 "</head>"
 "<body>"
   "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
-  "Smart T Controller<br>");
+  "Live API<br>");
 
     page += String(F("</body></html>"));
 
-    page += String(F("<h3>Live data from Cmots.ca</h3><br><br>"));
-    page += String(F("<h2>Account: "));
-    //page += String((emailAddress));
-    page += String(F("</h2><br><br>"));
+    page += String(F("{\n\""));
+    page += String((hostName));
+    page += String(F("\":{\n"));
+    page += String(F("{\n\"OEE\":"));
+    page += String((OEEValue));
+    page += String(F(",\n\"Temperature\":"));
+    page += String((getTemp()));
+    page += String(F(",\n\"Humidity\":"));
+    page += String((getHumid()));
+    page += String(F(",\n\"AmpsMAX,Watts\":"));
+    page += String((getCurrentWatts()));
+    page += String(F("\n}\n}"));
+   
+    page += String(F("<p><br><a class=\"button\" href=\"/api-now\">Refresh</a></p>"));
 
-    // page += String(F("<h4>InternetStatus: "));
-    // page += String((internetStatus));
-    // page += String(F("</h4><br><br>"));
-
-    // page += String(F("<h6>Data From Server Received At: "));
-    // page += String((LastUpdated));
-    // page += String(F("</h6><br><br>"));
-
-    // page += String(F("<h6>Press an IMEI button to select "));
-    // page += String(F("</h6><br><br>"));
-
-    // for (int j=0;j<nD;j++){
-
-    // page += String(F("<h4>Sensor "));
-    // page += String((j));
-    // page += String("</h4><br>  ");
-    // page += String(F("<a class=\"button\" href=\"/dev?v="));
-    // page += String(j);
-    // page += String(F("\">IMEI "));
-    // page += String((IMEIsList[j]));
-    // page += String(F("</a><br>"));
-    // page += String(F("<h5>Temperature: "));
-    // page += String((devList[j]));
-    // page += String(F("</h5><br><br>"));
-    
-    // }
-
-    page += String(F("<p><br><a class=\"button\" href=\"/cmots\">Refresh</a></p>"));
-
-  
+    page += String(F("</body></html>"));
     server.send(200, "text/html", page);
 
 
@@ -113,34 +94,32 @@ void handleRoot() {
   "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
   "Smart T Controller<br>"
   "GPIO(");
-  page += String(BUILTIN_LED);
-  page += String(F(") : <span style=\"font-weight:bold;color:"));
-  page += digitalRead(BUILTIN_LED) ? String("Tomato\">HIGH") : String("SlateBlue\">LOW");
-  page += String(F("</span>"));
-  page += String(F("<p>Server State<br><a class=\"button\" href=\"/io?v=low\">STOP</a><a class=\"button\" href=\"/io?v=high\">RUN</a></p>"));
-
-
-  page += String(F("<h3>Enter your cmots.ca credentials and data freq. below</h3><br><br><form action=/io?v><input type=\"text\" id=\"email\" name=\"email\" placeholder=\"Email Address\"><br><br>    <input placeholder=\"Password\" type=\"text\" id=\"pass\" name=\"pass\"><br><br>  <input type=\"submit\" value=\"Submit\"></form><br><br><p>You can visit cmots tab from menu.</p>"));
-  page += String(F("<h5>Selected IMEI: "));
-  //page += String((IMEIsList[selectedDeviceIndex]));
-  page += String(F("</h5>"));
-
-   page += String(F("<h4>Connection Mode "));
-    
-    page += String("</h4><br>  ");
-    page += String(F("<a class=\"button\" href=\"/conn?v=wifi"));
-    page += String(F("\">WiFi "));
-    page += String(F("</a><br>"));
-    page += String(F("<a class=\"button\" href=\"/conn?v=gprs"));
-    page += String(F("\">GPRS "));
-    page += String(F("</a><br>"));
-    page += String(F("<h5>SelectedMode: "));
-    
-    //page += String((connectionMode));
-    page += String(F("</h5><br><br>"));
-   
-
   page += String(F("</body></html>"));
+    page += String(F("<h1>Live Device Values</h1>"));
+    page += String(F("<h2>DeviceName: "));
+    page += String((hostName));
+    page += String(F("</h2>"));
+    page += String(F("<h2>Device Data</h2>"));
+    page += String(F("<h3>"));
+    page += String(F("OEE: "));
+    page += String((OEEValue));
+    page += String(F("</h3>"));
+    page += String(F("<h3>"));
+    page += String(F("Temperature: "));
+    page += String((getTemp()));
+    page += String(F("</h3>"));
+    page += String(F("<h3>"));
+    page += String(F("Humidity: "));
+    page += String((getHumid()));
+    page += String(F("</h3>"));
+    page += String(F("<h3>"));
+    page += String(F("AmpsMAX and Watts"));
+    page += String((getCurrentWatts()));
+    page += String(F("</h3>"));
+   
+    page += String(F("<p><br><a class=\"button\" href=\"/\">Refresh</a></p>"));
+
+    page += String(F("</body></html>"));
 
   
   server.send(200, "text/html", page);

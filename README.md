@@ -159,9 +159,13 @@ Here's the complete circuit diagram of the system.
 
 ## Usage <a name = "usage"></a>
 
-<!-- 1.  Run installer script on your Raspberry Pi.
-2.  Setup the camera as mentioned in the ``Configuring Camera`` section. -->
-1.  Default captive portal password `12345678`
+1.  Power on your ESP32, it will present you with an AP named ```OEE-someID``` (while ```OEE``` can be changed in the portal)
+2.  Default captive portal password `12345678AP` which can be changed in captive portal.
+3.  Connect to the ESP32 access point and open the web-browser and navigate to the link ```http://esp32.local/_ac```. This link will work on most of the operating systems but if your operating system is not allowing to open it, you may want to check the captive portal IP Address from the serial monitor and can use that IP address inplace of the above mentioned URL.
+4.  You will be presented with a main dashboard as shown below(based on your device)
+
+![SCR1](Circuit/scr1.png)
+![SCR2](Circuit/scr2.jpg)
 
 
 ## List of Components <a name = "list"></a>

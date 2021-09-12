@@ -18,7 +18,36 @@ WebServer server;
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 2 // backward compatibility
 #endif
+#if defined(ARDUINO_ARCH_ESP8266)
+#ifdef AUTOCONNECT_USE_SPIFFS
+FS &FlashFS = SPIFFS;
+#else
+#include <LittleFS.h>
+FS &FlashFS = LittleFS;
+#endif
+#elif defined(ARDUINO_ARCH_ESP32)
+#include <SPIFFS.h>
+fs::SPIFFSFS &FlashFS = SPIFFS;
+#endif
+#define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
+String serverName;
+String channelId;
+String userKey;
+String apiKey;
+String apid;
+String hostName;
+String minActiveValue;
+String ampSensorType;
+String sensorSelection;
+String apPass;
+String OEEValue="0.0";
+unsigned long lastPub = 0;
+unsigned int updateInterval = 2000;
 
+#define PARAM_FILE "/param.json"
+#define AUX_MQTTSETTING "/mqtt_setting"
+#define AUX_MQTTSAVE "/mqtt_save"
+#define AUX_MQTTCLEAR "/mqtt_clear"
 SoftwareStack ss; //SS instance
 AutoConnectConfig config;
 AutoConnect portal(server);
@@ -53,3 +82,4 @@ bool atDetect(IPAddress &softapIP)
 
     return true;
 }
+

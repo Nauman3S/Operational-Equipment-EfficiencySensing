@@ -76,11 +76,7 @@ void setupDHT22()
     // Set delay between sensor readings based on sensor details.
     delayMS = sensor.min_delay / 1000;
 }
-
-String getTempHumid()
-{
-    // Delay between measurements.
-    delay(10);
+String getTemp(){
     String data = "";
     // Get temperature event and print its value.
     sensors_event_t event;
@@ -88,6 +84,41 @@ String getTempHumid()
     if (isnan(event.temperature))
     {
         Serial.println(F("Error reading temperature!"));
+        data = String("0.0");
+        return data;
+    }
+    data = String(event.temperature);
+    return data;
+
+}
+String getHumid(){
+    String data = "";
+    // Get temperature event and print its value.
+    sensors_event_t event;
+    dht.humidity().getEvent(&event);
+    if (isnan(event.relative_humidity))
+    {
+        Serial.println(F("Error reading Humidity!"));
+        data = String("0.0");
+        return data;
+    }
+    data = String(event.relative_humidity);
+    return data;
+
+}
+String getTempHumid()
+{
+    // Delay between measurements.
+    //delay(10);
+    String data = "";
+    // Get temperature event and print its value.
+    sensors_event_t event;
+    dht.temperature().getEvent(&event);
+    if (isnan(event.temperature))
+    {
+        Serial.println(F("Error reading temperature!"));
+        data = String("0.0") + String(",") + String("0%");
+        return data;
     }
     else
     {
