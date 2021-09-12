@@ -71,19 +71,24 @@ You should have Arduino IDE Installed
         Note: if you already have the ESP32 boards URL, you can separate the URLs with a comma(each board will go to neaw line) as follows:
         ```https://dl.espressif.com/dl/package_esp32_index.json,\n http://arduino.esp8266.com/stable/package_esp8266com_index.json```
     
+    
   2. Open the Boards Manager. Go to Tools > Board > Boards Manager…
   3. Search for ESP32 and press install button for the ESP32 by Espressif Systems“:
   4. That’s it. It should be installed after a few seconds.
+  5.   In your Arduino sketchbook directory, create tools directory if it doesn't exist yet.
+  6.  Unpack the tool into tools directory(present in libs/ESP32FS-1.0.zip) (the path will look like <home_dir>/Arduino/tools/ESP32FS/tool/esp32fs.jar).
+  7.  Close and re-open the Arduino IDE.
 
-  5.  Now copy the contents of the libs folder to the libraries directory of your Arduino
+  8.  Now copy the contents of the libs folder to the libraries directory of your Arduino
       1. If you are using windows, the libraries directory will be Documents/Arduino/libraries
 
 ##### ESP32 Node FW Uploading
   1.  Select ESP32 Dev Module from Tools->Board->ESP32
   2.  Select the correct port from Tools->Port
   3.  Then open Firmware.ino file,
-  4.  Upload the Code to your ESP32 Dev Module.
-  5.  Your ESP32 is now ready to be used.
+  4.  Select Tools > ESP32 Sketch Data Upload menu item. This should start uploading the files into ESP32 flash file system.
+  5.  Now Upload the Code to your ESP32 Dev Module.
+  6.  Your ESP32 is now ready to be used.
 
 
 
