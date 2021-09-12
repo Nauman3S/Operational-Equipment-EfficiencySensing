@@ -71,12 +71,12 @@ You should have Arduino IDE Installed
         Note: if you already have the ESP32 boards URL, you can separate the URLs with a comma(each board will go to neaw line) as follows:
         ```https://dl.espressif.com/dl/package_esp32_index.json, http://arduino.esp8266.com/stable/package_esp8266com_index.json```
     
-    3. Open the Boards Manager. Go to Tools > Board > Boards Manager…
-    4. Search for ESP32 and press install button for the ESP32 by Espressif Systems“:
-    5. That’s it. It should be installed after a few seconds.
+  2. Open the Boards Manager. Go to Tools > Board > Boards Manager…
+  3. Search for ESP32 and press install button for the ESP32 by Espressif Systems“:
+  4. That’s it. It should be installed after a few seconds.
 
-  2.  Now copy the contents of the libs folder to the libraries directory of your Arduino
-    1. If you are using windows, the libraries directory will be Documents/Arduino/libraries
+  5.  Now copy the contents of the libs folder to the libraries directory of your Arduino
+      1. If you are using windows, the libraries directory will be Documents/Arduino/libraries
 
 ##### ESP32 Node FW Uploading
   1.  Select ESP32 Dev Module from Tools->Board->ESP32
