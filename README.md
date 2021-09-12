@@ -173,15 +173,15 @@ Here's the complete circuit diagram of the system.
    ![SCR4](Circuit/scr4.png)
 8.  **Disconnect** tab allows disconnecting from the connected AP and going into ESP32 WiFi AP mode.
 9.  **Reset...** tab allows reseting of the device to factory settings.
-    ![SCR5](Circuit/scr5)
+    ![SCR5](Circuit/scr5.png)
 10. **Settings** tab contains settings related to MQTT and sensors.
-    ![SCR6](Circuit/scr6)
+    ![SCR6](Circuit/scr6.png)
 11. **api-now** tab gives the live-sensor data in JSON format.
-    ![SCR7](Circuit/scr7)
+    ![SCR7](Circuit/scr7.png)
 12. **HOME** tab shows the network connectivity status.
-    ![SCR1](Circuit/scr1)
+    ![SCR1](Circuit/scr1.png)
 13. **LiveSensors** tab shows live values of the sensors.
-    ![SCR8](Circuit/scr8)
+    ![SCR8](Circuit/scr8.png)
 
 ## List of Components <a name = "list"></a>
 
