@@ -5,7 +5,7 @@
 #include <Wire.h>
 
 Adafruit_MPU6050 mpu;
-uint8_t mpuStatus=0;
+uint8_t mpuStatus = 0;
 void setupMPU6050(void)
 {
 
@@ -18,14 +18,15 @@ void setupMPU6050(void)
     if (!mpu.begin())
     {
         Serial.println("Failed to find MPU6050 chip. Check Connections.");
-        mpuStatus=0;
+        mpuStatus = 0;
         // while (1)
         // {
         //     delay(10);
         // }
     }
-    else{
-        mpuStatus=1;
+    else
+    {
+        mpuStatus = 1;
     }
     Serial.println("MPU6050 Found!");
 
@@ -99,38 +100,20 @@ String getMPU6050Data()
 {
 
     /* Get new sensor events with the readings */
-    
+
     String dataV = "";
-    if(mpuStatus==1){
-    /* Print out the values */
-    sensors_event_t a, g, temp;
-    mpu.getEvent(&a, &g, &temp);
-    dataV = String(a.acceleration.x) + String(",") + String(a.acceleration.y) + String(",") + String(a.acceleration.z) + String(",") + String(g.gyro.x) + String(",") + String(g.gyro.y) + String(",") + String(g.gyro.z) + String(",") + String(temp.temperature);
+    if (mpuStatus == 1)
+    {
+        /* Print out the values */
+        sensors_event_t a, g, temp;
+        mpu.getEvent(&a, &g, &temp);
+        dataV = String(a.acceleration.x) + String(",") + String(a.acceleration.y) + String(",") + String(a.acceleration.z) + String(",") + String(g.gyro.x) + String(",") + String(g.gyro.y) + String(",") + String(g.gyro.z) + String(",") + String(temp.temperature);
     }
-    else{
+    else
+    {
         dataV = String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0");
     }
-    //   Serial.print("Acceleration X: ");
-    //   Serial.print(a.acceleration.x);
-    //   Serial.print(", Y: ");
-    //   Serial.print(a.acceleration.y);
-    //   Serial.print(", Z: ");
-    //   Serial.print(a.acceleration.z);
-    //   Serial.println(" m/s^2");
 
-    //   Serial.print("Rotation X: ");
-    //   Serial.print(g.gyro.x);
-    //   Serial.print(", Y: ");
-    //   Serial.print(g.gyro.y);
-    //   Serial.print(", Z: ");
-    //   Serial.print(g.gyro.z);
-    //   Serial.println(" rad/s");
-
-    //   Serial.print("Temperature: ");
-    //   Serial.print(temp.temperature);
-    //   Serial.println(" degC");
-
-    //   Serial.println("");
     return dataV;
     delay(10);
 }

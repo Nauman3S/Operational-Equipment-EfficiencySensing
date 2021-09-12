@@ -1,13 +1,12 @@
-#include "dhtHandler.h"
-#include "mpu6050Handler.h"
-#include "currentSesnorHandler.h"
-#include "headers.h"
-#include "MQTTFuncs.h"
-#include "webApp.h"
-#include <FS.h>
+#include "dhtHandler.h"           //temperature and humidity functions
+#include "mpu6050Handler.h"       //IMU MPU6050 functions
+#include "currentSesnorHandler.h" //current sensor functions
+#include "headers.h"              //all misc. headers and functions
+#include "MQTTFuncs.h"            //MQTT related functions
+#include "webApp.h"               //Captive Portal webpages
+#include <FS.h>                   //ESP32 File System
 
-
-String loadParams(AutoConnectAux &aux, PageArgument &args)
+String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
 {
     (void)(args);
     File param = FlashFS.open(PARAM_FILE, "r");
@@ -21,7 +20,7 @@ String loadParams(AutoConnectAux &aux, PageArgument &args)
     return String("");
 }
 
-String saveParams(AutoConnectAux &aux, PageArgument &args)
+String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
 {
     serverName = args.arg("mqttserver"); //broker
     serverName.trim();
@@ -73,7 +72,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args)
 
     return String("");
 }
-bool loadAux(const String auxName)
+bool loadAux(const String auxName) //load defaults from data/*.json
 {
     bool rc = false;
     String fn = auxName + ".json";
@@ -88,7 +87,7 @@ bool loadAux(const String auxName)
     return rc;
 }
 
-void setup()
+void setup() //main setup functions
 {
     Serial.begin(115200);
     delay(1000);
@@ -96,7 +95,7 @@ void setup()
     setupMPU6050();
     setupCurrentSensor();
 
-    if (!MDNS.begin("esp32"))
+    if (!MDNS.begin("esp32")) //starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
     {
         Serial.println("Error setting up MDNS responder!");
         while (1)
@@ -112,12 +111,11 @@ void setup()
     loadAux(AUX_MQTTSETTING);
     loadAux(AUX_MQTTSAVE);
     AutoConnectAux *setting = portal.aux(AUX_MQTTSETTING);
-    if (setting)
+    if (setting) //get all the settings parameters from setting page on esp32 boot
     {
         PageArgument args;
         AutoConnectAux &mqtt_setting = *setting;
         loadParams(mqtt_setting, args);
-        // AutoConnectCheckbox &uniqueidElm = mqtt_setting["uniqueid"].as<AutoConnectCheckbox>();
         AutoConnectInput &hostnameElm = mqtt_setting["hostname"].as<AutoConnectInput>();
         AutoConnectInput &apPassElm = mqtt_setting["apPass"].as<AutoConnectInput>();
         AutoConnectInput &serverNameElm = mqtt_setting["mqttserver"].as<AutoConnectInput>();
@@ -127,12 +125,7 @@ void setup()
         AutoConnectInput &minActiveValueElm = mqtt_setting["minActiveValue"].as<AutoConnectInput>();
         AutoConnectRadio &ampSensorTypeElm = mqtt_setting["ampSensorType"].as<AutoConnectRadio>();
         AutoConnectRadio &periodElm = mqtt_setting["period"].as<AutoConnectRadio>();
-        // if (uniqueidElm.checked)
-        // {
 
-        //     // config.apid = String("ESP") + "-" + String(GET_CHIPID(), HEX);
-        //     // Serial.println("apid set to " + config.apid);
-        // }
         serverName = String(serverNameElm.value);
         channelId = String(channelidElm.value);
         userKey = String(userkeyElm.value);
@@ -159,7 +152,6 @@ void setup()
     {
         Serial.println("aux. load error");
     }
-    // portal.config("OEEAP", "123456789AP");
     config.homeUri = "/_ac";
     config.autoReconnect = true;
     config.reconnectInterval = 1;
@@ -167,17 +159,13 @@ void setup()
     Serial.println(hostName);
     Serial.print("Password: ");
     Serial.println(apPass);
-    config.title = "OEE Sensing";
+    config.title = "OEE Sensing"; //set title of webapp
+    //add different tabs on homepage
     portal.append("/api-now", "api-now");
     portal.append("/LiveSensors", "LiveSensors");
     server.on("/", handleRoot);
-    // server.on("/io", handleGPIO);
-    server.on("/dev", handleDEV);
-    server.on("/conn", handleCON);
     server.on("/api-now", cmotsValues);
     server.on("/LiveSensors", live);
-    // server.on(AUX_MQTTCLEAR, handleClearChannel);
-
     // Starts user web site included the AutoConnect portal.
     portal.config(config);
     portal.onDetect(atDetect);
@@ -196,26 +184,26 @@ void setup()
     }
 
     MDNS.addService("http", "tcp", 80);
-    mqttConnect();
+    mqttConnect(); //start mqtt
 }
 
 void loop()
 {
     server.handleClient();
     portal.handleRequest();
-    if (millis() - lastPub > updateInterval)
+    if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
-        mqttPublish("channels/0011", "data here");
-        Serial.println(ampSensorType);
-        Serial.println(sensorSelection);
-        Serial.println(minActiveValue);
-        Serial.println(channelId);
-        Serial.println(userKey);
-
-        Serial.println(apiKey);
-        Serial.println(apid);
-        Serial.println(hostName);
-        Serial.println(apPass);
+        mqttPublish("OEE/" + String(hostName), getTempHumid() + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
+        //uncomment the lines below for debugging
+        // Serial.println(ampSensorType);
+        // Serial.println(sensorSelection);
+        // Serial.println(minActiveValue);
+        // Serial.println(channelId);
+        // Serial.println(userKey);
+        // Serial.println(apiKey);
+        // Serial.println(apid);
+        // Serial.println(hostName);
+        // Serial.println(apPass);
 
         lastPub = millis();
     }

@@ -163,11 +163,17 @@ Here's the complete circuit diagram of the system.
 2.  Default captive portal password `12345678AP` which can be changed in captive portal.
 3.  Connect to the ESP32 access point and open the web-browser and navigate to the link ```http://esp32.local/_ac```. This link will work on most of the operating systems but if your operating system is not allowing to open it, you may want to check the captive portal IP Address from the serial monitor and can use that IP address inplace of the above mentioned URL.
 4.  You will be presented with a main dashboard as shown below(based on your device)
+   ![SCR1](Circuit/scr1.png)
 
-![SCR1](Circuit/scr1.png)
-![SCR2](Circuit/scr2.jpg)
+5.  Once connected to a WiFi network, you can again access the captive portal using same URL or the IP Address from the Serial monitor.
+6.  The data is published to the MQTT Topic ```OEE/{hostname}``` while the hostname is the one which you can define in Settings page of the captive portal.
 
-6.  **Configure New AP** tab allows searching of nearby WiFi APs and adding them to the ESP32.
+The whole system is following the flowchart given below:
+
+   ![flow](Circuit/flow.png)
+
+
+1.  **Configure New AP** tab allows searching of nearby WiFi APs and adding them to the ESP32.
    ![SCR3](Circuit/scr3.png)
 7.  **Open SSIDs** tab allows connecting to the saved access points.
    ![SCR4](Circuit/scr4.png)
