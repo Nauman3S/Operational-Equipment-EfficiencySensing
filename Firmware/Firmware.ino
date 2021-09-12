@@ -169,11 +169,13 @@ void setup()
     Serial.println(apPass);
     config.title = "OEE Sensing";
     portal.append("/api-now", "api-now");
+    portal.append("/LiveSensors", "LiveSensors");
     server.on("/", handleRoot);
     // server.on("/io", handleGPIO);
     server.on("/dev", handleDEV);
     server.on("/conn", handleCON);
     server.on("/api-now", cmotsValues);
+    server.on("/LiveSensors", live);
     // server.on(AUX_MQTTCLEAR, handleClearChannel);
 
     // Starts user web site included the AutoConnect portal.

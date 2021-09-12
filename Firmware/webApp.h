@@ -92,8 +92,7 @@ void handleRoot() {
 "</head>"
 "<body>"
   "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
-  "Smart T Controller<br>"
-  "GPIO(");
+  "OEE Sensing<br>");
   page += String(F("</body></html>"));
     page += String(F("<h1>Live Device Values</h1>"));
     page += String(F("<h2>DeviceName: "));
@@ -124,10 +123,14 @@ void handleRoot() {
   
   server.send(200, "text/html", page);
 }
+
 void redirectToHome() {
   server.sendHeader("Location", "/", true);
   server.send(302, "text/plain", "");
   //server.client().stop();
+}
+void live(){
+    redirectToHome();
 }
 void sendRedirect(String uri) {
   server.sendHeader("Location", uri, true);
