@@ -111,7 +111,7 @@ bool mqttConnect() {
 }
 
 void mqttPublish(String msg) {
-  String path = String("channels/") + channelId + String("/publish/") + apiKey;
+  String path = String("channels/0011");
   mqttClient.publish(path.c_str(), msg.c_str());
 }
 
@@ -276,13 +276,14 @@ void setup() {
     Serial.println("aux. load error");
 
   // Reconnect and continue publishing even if WiFi is disconnected.
-  config.autoReconnect = true;
-  config.reconnectInterval = 1;
+  //config.autoReconnect = true;
+  //config.reconnectInterval = 1;
   portal.config(config);
 
   Serial.print("WiFi ");
+  portal.config("ESP32AP","123456789AP");
   if (portal.begin()) {
-    config.bootUri = AC_ONBOOTURI_HOME;
+    //config.bootUri = AC_ONBOOTURI_HOME;
     Serial.println("connected:" + WiFi.SSID());
     Serial.println("IP:" + WiFi.localIP().toString());
   } else {
@@ -300,6 +301,7 @@ void setup() {
 
 void loop() {
   portal.handleClient();
+  updateInterval=2000;
   if (updateInterval > 0) {
     if (millis() - lastPub > updateInterval) {
       if (!mqttClient.connected()) {

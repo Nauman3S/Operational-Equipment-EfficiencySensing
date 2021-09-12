@@ -161,6 +161,7 @@ Here's the complete circuit diagram of the system.
 
 <!-- 1.  Run installer script on your Raspberry Pi.
 2.  Setup the camera as mentioned in the ``Configuring Camera`` section. -->
+1.  Default captive portal password `12345678`
 
 
 ## List of Components <a name = "list"></a>
