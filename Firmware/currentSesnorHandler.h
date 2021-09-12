@@ -1,4 +1,5 @@
 #include "EmonLib.h"
+#include <driver/adc.h>
 #define ADC_INPUT 34
 #define HOME_VOLTAGE 247.0
 #define ADC_BITS 10
