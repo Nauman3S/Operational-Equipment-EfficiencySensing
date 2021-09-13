@@ -143,6 +143,13 @@ void setup() //main setup functions
             //config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
             Serial.println("hostname set to " + hostName);
         }
+        else{
+
+            hostName = String("OEE") + String("-") + String(GET_CHIPID(), HEX);
+            portal.config(hostName.c_str(), "123456789AP");
+            //config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            Serial.println("hostname set to " + hostName);
+        }
         config.homeUri = "/_ac";
 
         portal.on(AUX_MQTTSETTING, loadParams);
@@ -167,7 +174,7 @@ void setup() //main setup functions
     server.on("/api-now", cmotsValues);
     server.on("/LiveSensors", live);
     // Starts user web site included the AutoConnect portal.
-    portal.config(config);
+    //portal.config(config);
     portal.onDetect(atDetect);
     if (portal.begin())
     {
