@@ -136,8 +136,9 @@ Other components pin connection details
 
 | LED Pins | ESP32 Dev Module | 
 | :--- | :--- | 
-| `Anode` | `35 via 220Ω resistor` |
+| `Anode` | `D2 via 220Ω resistor` |
 | `Cathode` | `GND` |
+*D2 is also connected to the internal LED of ESP32 Dev Module*
 
 #### SCT-013 
 
