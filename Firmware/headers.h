@@ -33,6 +33,8 @@ FS &FlashFS = LittleFS;
 fs::SPIFFSFS &FlashFS = SPIFFS;
 #endif
 #include "statusLED.h"
+#include "neoTimer.h"
+
 #define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
 String serverName;
 String channelId;

@@ -174,22 +174,36 @@ The whole system is following the flowchart given below:
 
    ![flow](Circuit/flow.png)
 
+### API Endpoints and HTML URLS
+```API Endpoints```
 
-1.  **Configure New AP** tab allows searching of nearby WiFi APs and adding them to the ESP32.
+| Endpoint | Description | 
+| :--- | :--- | 
+| `/api-now` | `API: live sensor readings in JSON format` |
+| `/api` | `API: historical sensors data in JSON format` |
+| `/LiveSensors` | `HTML PAGE: Live Sensor Data` |
+| `/data` | `HTML PAGE: Historical Sensor Data` | 
+| `/_ac` | `HTML PAGE: Main Captive portal page` | 
+| `/` | `HTML PAGE: Historical Sensor Data` | 
+
+
+1.  **Connect to WiFi** tab allows searching of nearby WiFi APs and adding them to the ESP32.
    ![SCR3](Circuit/scr3.png)
-7.  **Open SSIDs** tab allows connecting to the saved access points.
+7.  **Saved WiFi Networks** tab allows connecting to the saved access points.
    ![SCR4](Circuit/scr4.png)
-8.  **Disconnect** tab allows disconnecting from the connected AP and going into ESP32 WiFi AP mode.
-9.  **Reset...** tab allows reseting of the device to factory settings.
+8.  **Reset...** tab allows reseting of the device to factory settings.
     ![SCR5](Circuit/scr5.png)
-10. **Settings** tab contains settings related to MQTT and sensors.
+9.  **Settings** tab contains settings related to MQTT and sensors.
     ![SCR6](Circuit/scr6.png)
-11. **api-now** tab gives the live-sensor data in JSON format.
+10. **api-now** tab gives the live-sensor data in JSON format.
     ![SCR7](Circuit/scr7.png)
-12. **HOME** tab shows the network connectivity status.
-    ![SCR1](Circuit/scr1.png)
+11. **api** tab gives the historical sensor data acquired after every 5 mintues.
+    ![SCR9](Circuit/scr9.png)
 13. **LiveSensors** tab shows live values of the sensors.
     ![SCR8](Circuit/scr8.png)
+12. **HOME** tab shows historical sensor data in a HTML table form acquired after every 5 minutes.
+    ![SCR10](Circuit/scr10.png)
+
 
 ## List of Components <a name = "list"></a>
 

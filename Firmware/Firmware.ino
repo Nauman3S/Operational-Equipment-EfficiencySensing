@@ -6,6 +6,9 @@
 #include "webApp.h"               //Captive Portal webpages
 #include <FS.h>                   //ESP32 File System
 
+const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
+Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset to 1s
+
 String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
 {
     (void)(args);
@@ -93,18 +96,15 @@ bool loadAux(const String auxName) //load defaults from data/*.json
 uint8_t inAP = 0;
 bool whileCP()
 {
-    
+
     if (inAP == 0)
     {
         ledState(AP_MODE);
         inAP = 1;
     }
-   // Serial.println("AP MODE");
-    
-    loopLEDHandler();
-    
+    // Serial.println("AP MODE");
 
-    
+    loopLEDHandler();
 }
 
 void setup() //main setup functions
@@ -190,13 +190,17 @@ void setup() //main setup functions
     Serial.print("Password: ");
     Serial.println(apPass);
     config.title = "OEE Sensing"; //set title of webapp
-    
+
     //add different tabs on homepage
     portal.append("/api-now", "api-now");
+    portal.append("/api", "api");
     portal.append("/LiveSensors", "LiveSensors");
+    portal.disableMenu(AC_MENUITEM_DISCONNECT);
     server.on("/", handleRoot);
     server.on("/api-now", cmotsValues);
+    server.on("/api", api);
     server.on("/LiveSensors", live);
+    server.on("/data", dataTable);
     // Starts user web site included the AutoConnect portal.
     //portal.config(config);
     portal.whileCaptivePortal(whileCP);
@@ -225,6 +229,10 @@ void loop()
     server.handleClient();
     portal.handleRequest();
     loopLEDHandler();
+    if (dataAcqTimer.repeat())
+    {
+        ss.addSensorValue(String("10%"),getTemp(tempUnits),getHumid(),getCurrentWatts());
+    }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
         mqttPublish("OEE/" + String(hostName), getTempHumid(tempUnits) + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
