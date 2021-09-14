@@ -22,7 +22,7 @@ String getCurrentWatts()
 
     double amps = emon1.calcIrms(1480); // Calculate Irms only
     double watt = amps * HOME_VOLTAGE;
-    String v = String(amps) + String(",") + String(watt);
+    String v = String(amps); //+ String(",") + String(watt);
 
     return v;
 }

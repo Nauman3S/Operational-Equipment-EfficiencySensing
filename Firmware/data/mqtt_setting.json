@@ -56,8 +56,7 @@
       "label": "<h2>Sensor Settings</h2>",
       "value": [
         "Vibration",
-        "Current",
-        "Both"
+        "Current"
       ],
       "arrange": "vertical",
       "checked": 1

@@ -41,7 +41,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     ampSensorType.trim();
     ampSensorType = ampSensorType.substring(0, 2);
 
-    tempUnits= args.arg("tempUnits");
+    tempUnits = args.arg("tempUnits");
     tempUnits.trim();
 
     String upd = args.arg("period");
@@ -89,6 +89,22 @@ bool loadAux(const String auxName) //load defaults from data/*.json
     else
         Serial.println("Filesystem open failed: " + fn);
     return rc;
+}
+uint8_t inAP = 0;
+bool whileCP()
+{
+    
+    if (inAP == 0)
+    {
+        ledState(AP_MODE);
+        inAP = 1;
+    }
+   // Serial.println("AP MODE");
+    
+    loopLEDHandler();
+    
+
+    
 }
 
 void setup() //main setup functions
@@ -149,7 +165,8 @@ void setup() //main setup functions
             //config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
             Serial.println("hostname set to " + hostName);
         }
-        else{
+        else
+        {
 
             hostName = String("OEE") + String("-") + String(GET_CHIPID(), HEX);
             portal.config(hostName.c_str(), "123456789AP");
@@ -173,6 +190,7 @@ void setup() //main setup functions
     Serial.print("Password: ");
     Serial.println(apPass);
     config.title = "OEE Sensing"; //set title of webapp
+    
     //add different tabs on homepage
     portal.append("/api-now", "api-now");
     portal.append("/LiveSensors", "LiveSensors");
@@ -181,10 +199,12 @@ void setup() //main setup functions
     server.on("/LiveSensors", live);
     // Starts user web site included the AutoConnect portal.
     //portal.config(config);
+    portal.whileCaptivePortal(whileCP);
     portal.onDetect(atDetect);
     if (portal.begin())
     {
         Serial.println("Started, IP:" + WiFi.localIP().toString());
+        ledState(AP_MODE);
     }
     else
     {
@@ -204,9 +224,11 @@ void loop()
 {
     server.handleClient();
     portal.handleRequest();
+    loopLEDHandler();
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
         mqttPublish("OEE/" + String(hostName), getTempHumid(tempUnits) + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
+        ledState(ACTIVE_MODE);
         //uncomment the lines below for debugging
         // Serial.println(ampSensorType);
         // Serial.println(sensorSelection);
@@ -228,6 +250,7 @@ void loop()
     mqttClient.loop();
     if (WiFi.status() == WL_IDLE_STATUS)
     {
+        ledState(IDLE_MODE);
         ESP.restart();
 
         delay(1000);

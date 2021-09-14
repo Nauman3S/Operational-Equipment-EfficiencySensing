@@ -5,7 +5,10 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #endif
+
+
 #include <AutoConnect.h>
+
 
 #if defined(ARDUINO_ARCH_ESP8266)
 ESP8266WebServer server;
@@ -29,6 +32,7 @@ FS &FlashFS = LittleFS;
 #include <SPIFFS.h>
 fs::SPIFFSFS &FlashFS = SPIFFS;
 #endif
+#include "statusLED.h"
 #define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
 String serverName;
 String channelId;

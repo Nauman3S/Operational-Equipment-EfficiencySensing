@@ -50,7 +50,7 @@ void cmotsValues()
     page += String((getTemp(tempUnits)));
     page += String(F(",\n\"Humidity\":"));
     page += String((getHumid()));
-    page += String(F(",\n\"AmpsMAX,Watts\":"));
+    page += String(F(",\n\"Max Amps Measured\":"));
     page += String((getCurrentWatts()));
     page += String(F("\n}\n}"));
 
@@ -112,7 +112,7 @@ void handleRoot()
     page += String((getHumid()));
     page += String(F("</h3>"));
     page += String(F("<h3>"));
-    page += String(F("AmpsMAX and Watts"));
+    page += String(F("Max Amps Measured"));
     page += String((getCurrentWatts()));
     page += String(F("</h3>"));
     page += String(F("<br><br><h3>Data is being published to MQTT Topic: "));
