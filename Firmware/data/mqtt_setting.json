@@ -80,6 +80,17 @@
       "checked": 1
     },
     {
+      "name": "tempUnits",
+      "type": "ACRadio",
+      "label": "<h3>Temperature Units</h3>",
+      "value": [
+        "C",
+        "F"
+      ],
+      "arrange": "vertical",
+      "checked": 1
+    },
+    {
       "name": "hostname",
       "type": "ACInput",
       "label": "ESP hostname(Device & AP Name)",

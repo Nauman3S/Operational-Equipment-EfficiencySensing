@@ -41,6 +41,7 @@ String ampSensorType;
 String sensorSelection;
 String apPass;
 String OEEValue = "0.0";
+String tempUnits="";
 unsigned long lastPub = 0;
 unsigned int updateInterval = 2000;
 

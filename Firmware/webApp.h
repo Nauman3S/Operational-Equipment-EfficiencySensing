@@ -47,7 +47,7 @@ void cmotsValues()
     page += String(F("{\n\"OEE\":"));
     page += String((OEEValue));
     page += String(F(",\n\"Temperature\":"));
-    page += String((getTemp()));
+    page += String((getTemp(tempUnits)));
     page += String(F(",\n\"Humidity\":"));
     page += String((getHumid()));
     page += String(F(",\n\"AmpsMAX,Watts\":"));
@@ -105,7 +105,7 @@ void handleRoot()
     page += String(F("</h3>"));
     page += String(F("<h3>"));
     page += String(F("Temperature: "));
-    page += String((getTemp()));
+    page += String((getTemp(tempUnits)));
     page += String(F("</h3>"));
     page += String(F("<h3>"));
     page += String(F("Humidity: "));

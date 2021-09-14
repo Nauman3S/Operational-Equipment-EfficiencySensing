@@ -41,6 +41,9 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     ampSensorType.trim();
     ampSensorType = ampSensorType.substring(0, 2);
 
+    tempUnits= args.arg("tempUnits");
+    tempUnits.trim();
+
     String upd = args.arg("period");
     upd = upd.substring(0, 2);
     sensorSelection = upd;
@@ -67,6 +70,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     echo.value += "Sensor Settings: " + String(upd) + "<br>";
     echo.value += "Min Active Value: " + minActiveValue + "<br>";
     echo.value += "Amp Sensor Type: " + ampSensorType + "<br>";
+    echo.value += "Temperature Units: " + tempUnits + "<br>";
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
 
@@ -124,6 +128,7 @@ void setup() //main setup functions
         AutoConnectInput &apikeyElm = mqtt_setting["apikey"].as<AutoConnectInput>();
         AutoConnectInput &minActiveValueElm = mqtt_setting["minActiveValue"].as<AutoConnectInput>();
         AutoConnectRadio &ampSensorTypeElm = mqtt_setting["ampSensorType"].as<AutoConnectRadio>();
+        AutoConnectRadio &tempUnitsElm = mqtt_setting["tempUnits"].as<AutoConnectRadio>();
         AutoConnectRadio &periodElm = mqtt_setting["period"].as<AutoConnectRadio>();
 
         serverName = String(serverNameElm.value);
@@ -132,6 +137,7 @@ void setup() //main setup functions
         apiKey = String(apikeyElm.value);
         minActiveValue = String(minActiveValueElm.value);
         ampSensorType = String(ampSensorTypeElm.value());
+        tempUnits = String(tempUnitsElm.value());
         sensorSelection = String(periodElm.value());
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
@@ -200,7 +206,7 @@ void loop()
     portal.handleRequest();
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
-        mqttPublish("OEE/" + String(hostName), getTempHumid() + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
+        mqttPublish("OEE/" + String(hostName), getTempHumid(tempUnits) + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
         //uncomment the lines below for debugging
         // Serial.println(ampSensorType);
         // Serial.println(sensorSelection);
@@ -211,6 +217,7 @@ void loop()
         // Serial.println(apid);
         // Serial.println(hostName);
         // Serial.println(apPass);
+        // Serial.println(tempUnits)
 
         lastPub = millis();
     }
