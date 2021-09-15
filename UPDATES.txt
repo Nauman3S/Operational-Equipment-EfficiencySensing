@@ -22,6 +22,7 @@ DONE, NOW DISCONNECT IS REMOVED. YOU CAN CONNECT TO ANY OTHER NETWORK IN "Connec
 "Both" WAS FOR TESTING PURPOSES, REMOVED IT NOW
 
 8.) The actual live sensor value needs to be displayed on the settings page so the user knows what to set the minimum active value to. Vibration or current should be presented as an integer or something so the user can watch their equipment and understand what the minimum active value should be.
+DONE
 
 9.) I am getting false readings in Watts and Amps without the sensor actually plugged in. Can you have these read zero if the SCT013 isn't actually plugged in?
 ESP32 ADC CAN PICKUP ENVIRONMENT NOISE WHEN THE ADC PIN IS FLOATING(NOT CONNECTED TO ANYTHING), TO MAKE IT ZERO, WHEN YOU DON'T HAVE CONNECTED IT TO A SENSOR, CONNECT IT TO GND PIN. NOTHING ELSE CAN BE DONE AS IT IS UNIVERSAL FACT THAT ADC CAN PICKUP NOISE WHEN IN FLOATING STATE UNLESS IT IS CONNECTED TO GND OR SOME OTHER SIGNAL SOURCE.

@@ -13,9 +13,27 @@ String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load sa
 {
     (void)(args);
     File param = FlashFS.open(PARAM_FILE, "r");
+    String v1="";
+    String v2="";
     if (param)
     {
+        Serial.println("load params func");
         aux.loadElement(param);
+        Serial.println(param);
+        //Serial.println(args);
+        AutoConnectText &vibSValueElm=aux["vibSValue"].as<AutoConnectText>();
+        AutoConnectText &curSValueElm=aux["curSValue"].as<AutoConnectText>();
+        //vibSValueElm.value="VibS:91122";#
+        Serial.println(vibSValueElm.value);
+        v1=String(vibSValueElm.value);
+        v2=String(curSValueElm.value);
+        if(v1.length()>0){
+            vibSValueElm.value=String("Vibration: ")+getMPU6050Data();
+        }
+        if(v2.length()>0){
+            curSValueElm.value=String("Current: ")+getCurrentWatts();
+        }
+        // curSValueElm.value="CurS:7788";
         param.close();
     }
     else
@@ -82,6 +100,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
 bool loadAux(const String auxName) //load defaults from data/*.json
 {
     bool rc = false;
+    Serial.println("load aux func");
     String fn = auxName + ".json";
     File fs = FlashFS.open(fn.c_str(), "r");
     if (fs)
@@ -133,6 +152,7 @@ void setup() //main setup functions
     AutoConnectAux *setting = portal.aux(AUX_MQTTSETTING);
     if (setting) //get all the settings parameters from setting page on esp32 boot
     {
+        Serial.println("Setting loaded");
         PageArgument args;
         AutoConnectAux &mqtt_setting = *setting;
         loadParams(mqtt_setting, args);
@@ -146,7 +166,9 @@ void setup() //main setup functions
         AutoConnectRadio &ampSensorTypeElm = mqtt_setting["ampSensorType"].as<AutoConnectRadio>();
         AutoConnectRadio &tempUnitsElm = mqtt_setting["tempUnits"].as<AutoConnectRadio>();
         AutoConnectRadio &periodElm = mqtt_setting["period"].as<AutoConnectRadio>();
-
+        AutoConnectText &vibSValueElm=mqtt_setting["vibSValue"].as<AutoConnectText>();
+        AutoConnectText &curSValueElm=mqtt_setting["curSValue"].as<AutoConnectText>();
+        //vibSValueElm.value="VibS:11";
         serverName = String(serverNameElm.value);
         channelId = String(channelidElm.value);
         userKey = String(userkeyElm.value);

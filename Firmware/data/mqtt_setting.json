@@ -62,12 +62,6 @@
       "checked": 1
     },
     {
-      "name": "minActiveValue",
-      "type": "ACInput",
-      "label": "Minimum Active Value",
-      "value": "270"
-    },
-    {
       "name": "ampSensorType",
       "type": "ACRadio",
       "label": "<h3>Which Amp Sensor</h3>",
@@ -90,6 +84,51 @@
       "checked": 1
     },
     {
+      "name": "newline3",
+      "type": "ACElement",
+      "value": "<hr>"
+    },
+    {
+      "name": "vibSValue",
+      "type": "ACText",
+      "value": "0",
+      "style": "font-family:serif;color:#4682b4;"
+    },
+    {
+      "name": "curSValue",
+      "type": "ACText",
+      "value": "0",
+      "style": "font-family:serif;color:#4682b4;"
+    },
+    {
+      "name": "refresh",
+      "type": "ACButton",
+      "value": "Refresh Sensors",
+      "action": "refreshP()",
+      "posterior": "none"
+    },
+    {
+      "name": "newline4",
+      "type": "ACElement",
+      "value": "<br>"
+    },
+    {
+      "name": "minActiveValue",
+      "type": "ACInput",
+      "label": "Minimum Active Value",
+      "value": "270"
+    },
+    {
+      "name": "js",
+      "type": "ACElement",
+      "value": "<script type='text/javascript'>function refreshP() {document.location.reload(true);}</script>"
+    },
+    {
+      "name": "newline2",
+      "type": "ACElement",
+      "value": "<hr>"
+    },
+    {
       "name": "hostname",
       "type": "ACInput",
       "label": "ESP hostname(Device & AP Name)",
@@ -101,7 +140,6 @@
       "label": "ESP AP Password",
       "value": "123456789AP"
     },
-    
     {
       "name": "save",
       "type": "ACSubmit",
