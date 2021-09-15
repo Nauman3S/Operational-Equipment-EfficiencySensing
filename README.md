@@ -231,7 +231,10 @@ https://www.amazon.com/HiLetgo-MPU-6050-Accelerometer-Gyroscope-Converter/dp/B00
 
 - [Python](https://www.python.org/) - For Cloud Gateway Pogramming
 - [Arduino](https://www.arduino.cc/) - Embedded Framework and IDE - For Sensor Node Design
-  
+
+## 📹 Demo Videos <a name = "demo"></a>
+
+-   [Device Demo Video](https://youtu.be/YtVo1j4n8tg) - OEE Device Demo Video
 
 ## ✍️ Authors <a name = "authors"></a>
 
