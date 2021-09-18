@@ -6,9 +6,7 @@
 #include <WebServer.h>
 #endif
 
-
 #include <AutoConnect.h>
-
 
 #if defined(ARDUINO_ARCH_ESP8266)
 ESP8266WebServer server;
@@ -41,13 +39,14 @@ String channelId;
 String userKey;
 String apiKey;
 String apid;
-String hostName;
+String hostName = "OEE";
 String minActiveValue;
 String ampSensorType;
 String sensorSelection;
 String apPass;
+String settingsPass;
 String OEEValue = "0.0";
-String tempUnits="";
+String tempUnits = "";
 unsigned long lastPub = 0;
 unsigned int updateInterval = 2000;
 
@@ -55,6 +54,23 @@ unsigned int updateInterval = 2000;
 #define AUX_MQTTSETTING "/mqtt_setting"
 #define AUX_MQTTSAVE "/mqtt_save"
 #define AUX_MQTTCLEAR "/mqtt_clear"
+static const char PAGE_AUTH[] PROGMEM = R"(
+{
+  "uri": "/auth",
+  "title": "Auth",
+  "menu": false,
+    "auth": "digest",
+  "element": [
+    {
+      "name": "text",
+      "type": "ACText",
+      "value": "AutoConnect has authorized",
+      "style": "font-family:Arial;font-size:18px;font-weight:400;color:#191970"
+    }
+  ]
+}
+)";
+
 SoftwareStack ss; //SS instance
 AutoConnectConfig config;
 AutoConnect portal(server);

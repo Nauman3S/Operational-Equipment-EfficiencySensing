@@ -2,6 +2,7 @@
   "title": "Settings",
   "uri": "/mqtt_setting",
   "menu": true,
+  "auth": "digest",
   "element": [
     {
       "name": "style",
@@ -132,13 +133,19 @@
       "name": "hostname",
       "type": "ACInput",
       "label": "ESP hostname(Device & AP Name)",
-      "value": "OEE"
+      "value": "OEEDevice"
     },
     {
       "name": "apPass",
       "type": "ACInput",
       "label": "ESP AP Password",
       "value": "123456789AP"
+    },
+    {
+      "name": "settingsPass",
+      "type": "ACInput",
+      "label": "Settings Page Password",
+      "value": "admin"
     },
     {
       "name": "save",

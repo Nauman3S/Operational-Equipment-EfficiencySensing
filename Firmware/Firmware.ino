@@ -8,30 +8,32 @@
 
 const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
 Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset to 1s
-
+IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
 {
     (void)(args);
     File param = FlashFS.open(PARAM_FILE, "r");
-    String v1="";
-    String v2="";
+    String v1 = "";
+    String v2 = "";
     if (param)
     {
         Serial.println("load params func");
         aux.loadElement(param);
         Serial.println(param);
         //Serial.println(args);
-        AutoConnectText &vibSValueElm=aux["vibSValue"].as<AutoConnectText>();
-        AutoConnectText &curSValueElm=aux["curSValue"].as<AutoConnectText>();
+        AutoConnectText &vibSValueElm = aux["vibSValue"].as<AutoConnectText>();
+        AutoConnectText &curSValueElm = aux["curSValue"].as<AutoConnectText>();
         //vibSValueElm.value="VibS:91122";#
         Serial.println(vibSValueElm.value);
-        v1=String(vibSValueElm.value);
-        v2=String(curSValueElm.value);
-        if(v1.length()>0){
-            vibSValueElm.value=String("Vibration: ")+getMPU6050Data();
+        v1 = String(vibSValueElm.value);
+        v2 = String(curSValueElm.value);
+        if (v1.length() > 0)
+        {
+            vibSValueElm.value = String("Vibration: ") + getMPU6050Data();
         }
-        if(v2.length()>0){
-            curSValueElm.value=String("Current: ")+getCurrentWatts();
+        if (v2.length() > 0)
+        {
+            curSValueElm.value = String("Current: ") + getCurrentWatts();
         }
         // curSValueElm.value="CurS:7788";
         param.close();
@@ -72,6 +74,9 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     apPass = args.arg("apPass"); //ap pass
     apPass.trim();
 
+    settingsPass = args.arg("settingsPass"); //ap pass
+    settingsPass.trim();
+
     hostName = args.arg("hostname");
     hostName.trim();
 
@@ -79,7 +84,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     // To retrieve the elements of /mqtt_setting, it is necessary to get
     // the AutoConnectAux object of /mqtt_setting.
     File param = FlashFS.open(PARAM_FILE, "w");
-    portal.aux("/mqtt_setting")->saveElement(param, {"mqttserver", "channelid", "userkey", "apikey", "period", "minActiveValue", "ampSensorType", "hostname", "apPass"});
+    portal.aux("/mqtt_setting")->saveElement(param, {"mqttserver", "channelid", "userkey", "apikey", "period", "minActiveValue", "ampSensorType", "tempUnits", "hostname", "apPass", "settingsPass"});
     param.close();
 
     // Echo back saved parameters to AutoConnectAux page.
@@ -94,6 +99,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     echo.value += "Temperature Units: " + tempUnits + "<br>";
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
+    echo.value += "Settings Page Password: " + settingsPass + "<br>";
 
     return String("");
 }
@@ -166,8 +172,9 @@ void setup() //main setup functions
         AutoConnectRadio &ampSensorTypeElm = mqtt_setting["ampSensorType"].as<AutoConnectRadio>();
         AutoConnectRadio &tempUnitsElm = mqtt_setting["tempUnits"].as<AutoConnectRadio>();
         AutoConnectRadio &periodElm = mqtt_setting["period"].as<AutoConnectRadio>();
-        AutoConnectText &vibSValueElm=mqtt_setting["vibSValue"].as<AutoConnectText>();
-        AutoConnectText &curSValueElm=mqtt_setting["curSValue"].as<AutoConnectText>();
+        AutoConnectText &vibSValueElm = mqtt_setting["vibSValue"].as<AutoConnectText>();
+        AutoConnectText &curSValueElm = mqtt_setting["curSValue"].as<AutoConnectText>();
+        AutoConnectInput &settingsPassElm = mqtt_setting["settingsPass"].as<AutoConnectInput>();
         //vibSValueElm.value="VibS:11";
         serverName = String(serverNameElm.value);
         channelId = String(channelidElm.value);
@@ -179,23 +186,33 @@ void setup() //main setup functions
         sensorSelection = String(periodElm.value());
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
+        settingsPass=String(settingsPassElm.value);
         if (hostnameElm.value.length())
         {
             //hostName=hostName+ String("-") + String(GET_CHIPID(), HEX);
-            hostName = String("OEE") + String("-") + String(GET_CHIPID(), HEX);
-            portal.config(hostName.c_str(), apPass.c_str());
-            //config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
-            Serial.println("hostname set to " + hostName);
+            //;
+            //portal.config(hostName.c_str(), apPass.c_str());
+            // portal.config(hostName.c_str(), "123456789AP");
+            config.apid = hostName; //hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            config.password = apPass;
+            config.psk = apPass;
+            // portal.config(hostName.c_str(), "123456789AP");
+            Serial.println("(from hostELM) hostname set to " + hostName);
         }
         else
         {
 
-            hostName = String("OEE") + String("-") + String(GET_CHIPID(), HEX);
-            portal.config(hostName.c_str(), "123456789AP");
+            // hostName = String("OEE");;
+            // portal.config(hostName.c_str(), "123456789AP");
+            config.apid = hostName; //hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            config.password = apPass;
+            config.psk = apPass;
             //config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            // portal.config(hostName.c_str(), "123456789AP");
             Serial.println("hostname set to " + hostName);
         }
         config.homeUri = "/_ac";
+        config.apip = ipV;
 
         portal.on(AUX_MQTTSETTING, loadParams);
         portal.on(AUX_MQTTSAVE, saveParams);
@@ -205,6 +222,7 @@ void setup() //main setup functions
         Serial.println("aux. load error");
     }
     config.homeUri = "/_ac";
+    config.apip = ipV;
     config.autoReconnect = true;
     config.reconnectInterval = 1;
     Serial.print("AP: ");
@@ -224,9 +242,16 @@ void setup() //main setup functions
     server.on("/LiveSensors", live);
     server.on("/data", dataTable);
     // Starts user web site included the AutoConnect portal.
-    //portal.config(config);
+
+    config.auth = AC_AUTH_DIGEST;
+    config.authScope = AC_AUTHSCOPE_PARTIAL;
+    config.username = hostName;
+    config.password = settingsPass;
+    
+    portal.config(config);
     portal.whileCaptivePortal(whileCP);
     portal.onDetect(atDetect);
+    portal.load(FPSTR(PAGE_AUTH));
     if (portal.begin())
     {
         Serial.println("Started, IP:" + WiFi.localIP().toString());
@@ -253,7 +278,7 @@ void loop()
     loopLEDHandler();
     if (dataAcqTimer.repeat())
     {
-        ss.addSensorValue(String("10%"),getTemp(tempUnits),getHumid(),getCurrentWatts());
+        ss.addSensorValue(String("10%"), getTemp(tempUnits), getHumid(), getCurrentWatts());
     }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
