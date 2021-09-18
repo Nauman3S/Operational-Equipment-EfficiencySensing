@@ -7,7 +7,8 @@
 #include <FS.h>                   //ESP32 File System
 
 const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
-Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset to 1s
+Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
+
 IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
 {
@@ -221,7 +222,7 @@ void setup() //main setup functions
     {
         Serial.println("aux. load error");
     }
-    config.homeUri = "/_ac";
+    //config.homeUri = "/_ac";
     config.apip = ipV;
     config.autoReconnect = true;
     config.reconnectInterval = 1;
@@ -278,7 +279,9 @@ void loop()
     loopLEDHandler();
     if (dataAcqTimer.repeat())
     {
-        ss.addSensorValue(String("10%"), getTemp(tempUnits), getHumid(), getCurrentWatts());
+        OEEValue=ss.getOEEValue();
+        ss.addSensorValue(OEEValue, getTemp(tempUnits), getHumid(), getCurrentWatts());
+        
     }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {

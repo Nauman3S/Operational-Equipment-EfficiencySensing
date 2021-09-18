@@ -10,18 +10,38 @@ public:
     void addSensorValue(String oee, String temperatureV, String Humid, String Amps);
     String getSensorsArray();
     String getSensorsJSON();
+    String getOEEValue();
     SoftwareStack();
 
 private:
     //  String configs="";
     char buf[100];
-    String SensorVals[30];
-
+    static const int maxDataPoints=36;
+    String SensorVals[maxDataPoints];
+    
     int sensorVCounter = 0;
 };
 SoftwareStack::SoftwareStack()
 {
-    SensorVals[0] = String("0,0,0,0");
+
+    for (int i = 0; i < maxDataPoints; i++)
+    {
+        SensorVals[i] = String("0,0,0,0");
+    }
+}
+
+String SoftwareStack::getOEEValue()
+{   
+    float v=0;
+    String valStr ="";
+    for (int i=0;i<maxDataPoints;i++){
+         valStr=StringSeparator(SensorVals[i], ',', 3);//get current value
+         v=v+valStr.toFloat();
+    }
+    v=v/(float)maxDataPoints;
+    v=v*100.0;//convert to percentage
+    valStr=String(v);
+    return valStr;
 }
 String SoftwareStack::getSensorsJSON()
 {
@@ -59,7 +79,7 @@ String SoftwareStack::getSensorsArray()
 }
 void SoftwareStack::addSensorValue(String oee, String temperatureV, String Humid, String Amps)
 {
-    if (sensorVCounter >= 30)
+    if (sensorVCounter >= maxDataPoints)
     {
         sensorVCounter = 0; //reset from 0;
     }

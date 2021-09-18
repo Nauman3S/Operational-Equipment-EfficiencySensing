@@ -1,3 +1,17 @@
+String serverName;
+String channelId;
+String userKey;
+String apiKey;
+String apid;
+String hostName = "OEE";
+String minActiveValue="0";
+String ampSensorType;
+String sensorSelection;
+String apPass;
+String settingsPass;
+String OEEValue = "0";
+String tempUnits = "";
+
 #if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
@@ -34,19 +48,7 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 #include "neoTimer.h"
 
 #define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
-String serverName;
-String channelId;
-String userKey;
-String apiKey;
-String apid;
-String hostName = "OEE";
-String minActiveValue;
-String ampSensorType;
-String sensorSelection;
-String apPass;
-String settingsPass;
-String OEEValue = "0.0";
-String tempUnits = "";
+
 unsigned long lastPub = 0;
 unsigned int updateInterval = 2000;
 
