@@ -183,6 +183,7 @@ The whole system is following the flowchart given below:
 | `/api` | `API: historical sensors data in JSON format` |
 | `/LiveSensors` | `HTML PAGE: Live Sensor Data` |
 | `/data` | `HTML PAGE: Historical Sensor Data` | 
+| `/mqtt_settings` | `HTML PAGE: Settings. Default username: AP Name, Default Password: admin` | 
 | `/_ac` | `HTML PAGE: Main Captive portal page` | 
 | `/` | `HTML PAGE: Historical Sensor Data` | 
 

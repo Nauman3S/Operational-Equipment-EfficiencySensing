@@ -7,3 +7,4 @@
    the passowrd is `admin` on first boot which can be changed from settings page.
 7) JSON API, Live Values and other parameters now only contain user defined device name, no unique random id is added.
 8) Correct OEE calculations added. OEE is now calculated after every 5 minutes.
+9) Status and IP details will be added on the OLED.
