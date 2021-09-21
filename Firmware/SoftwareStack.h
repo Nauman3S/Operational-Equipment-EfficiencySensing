@@ -34,15 +34,17 @@ String SoftwareStack::getOEEValue()
 {
     float v = 0;
     String valStr = "";
+    int totalPoints=0;
     for (int i = 0; i < maxDataPoints; i++)
     {
         if (SensorVals[i] != String("0,0,0,0,0"))
         {
             valStr = StringSeparator(SensorVals[i], ',', 4); //get current value
             v = v + valStr.toFloat();
+            totalPoints++;
         }
     }
-    v = v / (float)maxDataPoints;
+    v = v / (float)totalPoints;
     v = v * 100.0; //convert to percentage
     valStr = String(v);
     return valStr;

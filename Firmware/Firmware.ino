@@ -236,6 +236,7 @@ void setup() //main setup functions
     portal.append("/api-now", "api-now");
     portal.append("/api", "api");
     portal.append("/LiveSensors", "LiveSensors");
+    portal.append("/data", "DataTable");
     portal.disableMenu(AC_MENUITEM_DISCONNECT);
     server.on("/", handleRoot);
     server.on("/api-now", cmotsValues);
