@@ -39,12 +39,12 @@ void cmotsValues()
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
                                                         "Live API<br>");
 
-    
-
     page += String(F("{\n\""));
     page += String((hostName));
     page += String(F("\":{\n"));
-    page += String(F("{\n\"OEE\":"));
+    page += String(F("{\n\"Timestamp\":"));
+    page += String((getTimestamp()));
+    page += String(F(",\n\"OEE\":"));
     page += String((OEEValue));
     page += String(F(",\n\"Temperature\":"));
     page += String((getTemp(tempUnits)));
@@ -95,14 +95,12 @@ void api()
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
                                                         "Historical API<br>");
 
-    
-
     page += String(F("{\n\""));
     page += String((hostName));
     page += String(F("\":"));
-    
+
     page += String((ss.getSensorsJSON()));
-    
+
     page += String(F("\n}"));
 
     page += String(F("<p><br><a class=\"button\" href=\"/api\">Refresh</a></p>"));
@@ -156,6 +154,7 @@ void handleRoot()
     page += String(F("<h1>Historical Sensors Data</h1>"));
     page += String(F("<table class=\"center\">"));
     page += String(F("<tr>"));
+    page += String(F("<th>Timestamp</th>"));
     page += String(F("<th>OEE</th>"));
     page += String(F("<th>Temperature</th>"));
     page += String(F("<th>Humidity</th>"));
@@ -176,7 +175,8 @@ void redirectToHome()
     server.send(302, "text/plain", "");
     //server.client().stop();
 }
-void dataTable(){
+void dataTable()
+{
     redirectToHome();
 }
 void live()
@@ -219,6 +219,10 @@ void live()
     page += String((hostName));
     page += String(F("</h2>"));
     page += String(F("<h2>Device Data</h2>"));
+    page += String(F("<h3>"));
+    page += String(F("Timestamp: "));
+    page += String((getTimestamp()));
+    page += String(F("</h3>"));
     page += String(F("<h3>"));
     page += String(F("OEE: "));
     page += String((OEEValue));

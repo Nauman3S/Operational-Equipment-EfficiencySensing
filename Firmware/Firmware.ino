@@ -187,7 +187,7 @@ void setup() //main setup functions
         sensorSelection = String(periodElm.value());
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
-        settingsPass=String(settingsPassElm.value);
+        settingsPass = String(settingsPassElm.value);
         if (hostnameElm.value.length())
         {
             //hostName=hostName+ String("-") + String(GET_CHIPID(), HEX);
@@ -248,7 +248,7 @@ void setup() //main setup functions
     config.authScope = AC_AUTHSCOPE_PARTIAL;
     config.username = hostName;
     config.password = settingsPass;
-    
+
     portal.config(config);
     portal.whileCaptivePortal(whileCP);
     portal.onDetect(atDetect);
@@ -279,13 +279,12 @@ void loop()
     loopLEDHandler();
     if (dataAcqTimer.repeat())
     {
-        OEEValue=ss.getOEEValue();
-        ss.addSensorValue(OEEValue, getTemp(tempUnits), getHumid(), getCurrentWatts());
-        
+        OEEValue = ss.getOEEValue();
+        ss.addSensorValue(getTimestamp(), OEEValue, getTemp(tempUnits), getHumid(), getCurrentWatts());
     }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
-        mqttPublish("OEE/" + String(hostName), getTempHumid(tempUnits) + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
+        mqttPublish("OEE/" + String(hostName), getTimestamp() + String(";") + getTempHumid(tempUnits) + String(";") + getMPU6050Data() + String(";") + getCurrentWatts()); //publish data to mqtt broker
         ledState(ACTIVE_MODE);
         //uncomment the lines below for debugging
         // Serial.println(ampSensorType);

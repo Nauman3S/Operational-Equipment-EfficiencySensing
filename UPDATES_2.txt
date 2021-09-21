@@ -1,0 +1,10 @@
+1) Changed IP Address to 192.168.4.1
+2) Now user can full change the AP Name
+3) Captive Portal Changes are now persistent throug the esp32 power failures.
+4) Converted Current readings to a 2 decimal place readings
+5) Converted vibration readings to a integer in range 0-255
+6) Authentication added to the Settings page, now it is password protected. The username is same as hostname while
+   the passowrd is `admin` on first boot which can be changed from settings page.
+7) JSON API, Live Values and other parameters now only contain user defined device name, no unique random id is added.
+8) Correct OEE calculations added. OEE is now calculated after every 5 minutes.
+9) Status and IP details will be added on the OLED.

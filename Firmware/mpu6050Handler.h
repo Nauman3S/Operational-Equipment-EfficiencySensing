@@ -96,6 +96,11 @@ void setupMPU6050(void)
     delay(100);
 }
 
+int roundint(double r)
+{
+    return (int)((r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5));
+}
+
 String getMPU6050Data()
 {
 
@@ -108,18 +113,16 @@ String getMPU6050Data()
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);
         //dataV = String(a.acceleration.x) + String(",") + String(a.acceleration.y) + String(",") + String(a.acceleration.z) + String(",") + String(g.gyro.x) + String(",") + String(g.gyro.y) + String(",") + String(g.gyro.z) + String(",") + String(temp.temperature);
-        float vibration=g.gyro.x + g.gyro.y +g.gyro.z;
-        vibration=vibration/3;//get avg
-        
-        int longVib=(int)vibration;
-        longVib=map(longVib,-1,1,0,255);
-        dataV=String(longVib);
+        float vibration = g.gyro.x + g.gyro.y + g.gyro.z;
+        vibration = vibration / 3; //get avg
 
+        int longVib = (int)roundint(vibration);
+        dataV = String(longVib);
     }
     else
     {
         //dataV = String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0") + String(",") + String("0");
-        dataV="0";
+        dataV = "0";
     }
 
     return dataV;

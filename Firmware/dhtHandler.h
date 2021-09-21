@@ -77,6 +77,10 @@ void setupDHT22()
     // Set delay between sensor readings based on sensor details.
     delayMS = sensor.min_delay / 1000;
 }
+String getTimestamp(){
+    String ts="HH:MM:SS_DD/MM/YY";
+    return ts;
+}
 String getTemp(String unit)
 {
     String data = "";
