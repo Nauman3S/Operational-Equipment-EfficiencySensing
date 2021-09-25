@@ -15,9 +15,7 @@ numpy
 ordered-set
 packaging
 paho-mqtt
-pandas
 pep517
-phantomjs
 ply
 progress
 pycparser

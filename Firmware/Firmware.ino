@@ -7,7 +7,7 @@
 #include "webApp.h"               //Captive Portal webpages
 #include <FS.h>                   //ESP32 File System
 
-const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
+const long interval = 1000 * 1 * 5;        // Interval at which to read sensors//5 mintues
 Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
 
 IPAddress ipV(192, 168, 4, 1);

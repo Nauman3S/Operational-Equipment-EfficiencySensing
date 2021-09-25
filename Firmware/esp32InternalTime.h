@@ -42,7 +42,7 @@ void syncTime(String timestampPkt)
 String getTimestamp()
 {
 
-    String ts = rtc.getTime("%A, %B %d %Y %H:%M:%S");
+    String ts = rtc.getTime("%A %B %d %Y %H:%M:%S");
     ts = ts + String(".") + String(rtc.getMillis());
 
     return ts;
