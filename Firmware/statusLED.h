@@ -1,6 +1,6 @@
 #include <jled.h>
 
-#define LED_BUILTIN 33
+#define LED_BUILTIN 33 //Azure LED on Azure IoT Kit
 #define ACTIVE_MODE 0
 #define IDLE_MODE 1
 #define AP_MODE 2
