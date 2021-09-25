@@ -7,7 +7,7 @@ void mqttPublish(String path, String msg);
 
 void MQTTUnSubscribe()
 {
-    String topicN = String("SmartTControl/data/devices/");
+    String topicN = String("OEEDevice/dev/timestamp");
     String topicU = String("SmartTControl/lastUpdated/devices/");
 
     mqttClient.unsubscribe(topicN.c_str());
@@ -20,8 +20,9 @@ void MQTTSubscriptions()
     // for(int i=0;i<10;i++){
     //   IMEIsList[i]==String("NA");
     // }
-    String topicN = String("SmartTControl/data/devices/");
+
     String topicU = String("SmartTControl/lastUpdated/devices/");
+    String topicN = String("OEEDevice/dev/timestamp");
     mqttClient.subscribe(topicN.c_str());
     mqttClient.subscribe(topicU.c_str());
 }
@@ -37,11 +38,9 @@ void callback(char *topic, byte *payload, unsigned int length)
         pLoad = pLoad + String((char)payload[i]);
     }
     Serial.println();
-    if (String(topic) == String("SmartTControl/user/login"))
+    if (String(topic) == String("OEEDevice/dev/timestamp"))
     {
-        Serial.print("login status:::");
-        Serial.println(String(pLoad));
-        loggedIn = pLoad;
+        syncTime(pLoad);
     }
 
     // Switch on the LED if an 1 was received as first character

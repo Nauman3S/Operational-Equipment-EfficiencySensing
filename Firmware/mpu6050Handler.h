@@ -30,7 +30,7 @@ void setupMPU6050(void)
     }
     Serial.println("MPU6050 Found!");
 
-    mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+    mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
     Serial.print("Accelerometer range set to: ");
     switch (mpu.getAccelerometerRange())
     {
@@ -47,7 +47,7 @@ void setupMPU6050(void)
         Serial.println("+-16G");
         break;
     }
-    mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+    mpu.setGyroRange(MPU6050_RANGE_2000_DEG);
     Serial.print("Gyro range set to: ");
     switch (mpu.getGyroRange())
     {
@@ -113,10 +113,12 @@ String getMPU6050Data()
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);
         //dataV = String(a.acceleration.x) + String(",") + String(a.acceleration.y) + String(",") + String(a.acceleration.z) + String(",") + String(g.gyro.x) + String(",") + String(g.gyro.y) + String(",") + String(g.gyro.z) + String(",") + String(temp.temperature);
-        float vibration = g.gyro.x + g.gyro.y + g.gyro.z;
-        vibration = vibration / 3; //get avg
+        float vibration = g.gyro.x*10 + g.gyro.y*10 + g.gyro.z*10 + a.acceleration.x*10 + a.acceleration.y*10 + a.acceleration.z*10;
+        vibration = vibration * 1.0; //get avg
 
         int longVib = (int)roundint(vibration);
+        longVib=map(longVib,-150,150,0,255);
+       // Serial.println(longVib);
         dataV = String(longVib);
     }
     else

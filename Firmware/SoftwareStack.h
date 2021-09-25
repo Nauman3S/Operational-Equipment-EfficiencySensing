@@ -47,6 +47,9 @@ String SoftwareStack::getOEEValue()
     v = v / (float)totalPoints;
     v = v * 100.0; //convert to percentage
     valStr = String(v);
+    if(valStr==String("nan")){
+        valStr=String("0");
+    }
     return valStr;
 }
 String SoftwareStack::getSensorsJSON()

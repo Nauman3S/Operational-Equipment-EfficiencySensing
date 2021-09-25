@@ -2,6 +2,7 @@
 #include "mpu6050Handler.h"       //IMU MPU6050 functions
 #include "currentSesnorHandler.h" //current sensor functions
 #include "headers.h"              //all misc. headers and functions
+#include "esp32InternalTime.h"
 #include "MQTTFuncs.h"            //MQTT related functions
 #include "webApp.h"               //Captive Portal webpages
 #include <FS.h>                   //ESP32 File System
