@@ -46,6 +46,9 @@ String SoftwareStack::getOEEValue()
     }
     v = v / (float)totalPoints;
     v = v * 100.0; //convert to percentage
+    if(v>100){
+        v=100;//max bounds
+    }
     valStr = String(v);
     if(valStr==String("nan")){
         valStr=String("0");
