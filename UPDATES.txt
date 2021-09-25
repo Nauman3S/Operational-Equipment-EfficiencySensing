@@ -1,3 +1,5 @@
 1). Vibration Sensor is now made sensitive (it will detect small changes and will present them as an integer in range 0-255)
 2). Developed a timestamping backend server and deployed it to my production server, it sends timestamp data over mqtt after every 10 seconds.
 3). The esp32 now shows correct timestamps which is also synchronised after every 10 seconds with the server.
+4). OEE Calculations now corrected.
+5). LED Issure resolved on Azure IOT Kit. If you upload the code to Azure IoT kit, the LED marked with 'Azure' will start blinking correctly.(please note that temperature/vibration sensors will not work on azure iot kit as they are not programmed for it yet.)
