@@ -11,13 +11,19 @@ public:
     String getSensorsArray();
     String getSensorsJSON();
     String getOEEValue();
+    void acquireAndStoreCurrentSensorValues_OEE(String CurrentValue);
+    void calculateOEEValue();
     SoftwareStack();
 
 private:
     //  String configs="";
     char buf[100];
     static const int maxDataPoints = 36;
+    static const int maxOEEValueDataPoints = 3600;
     String SensorVals[maxDataPoints];
+    int OEEArray[maxOEEValueDataPoints];
+    int OEEArrayIndexCounter = 0;
+    float recentOEEValue = 0;
 
     int sensorVCounter = 0;
 };
@@ -29,40 +35,39 @@ SoftwareStack::SoftwareStack()
         SensorVals[i] = String("0,0,0,0,0");
     }
 }
+void SoftwareStack::acquireAndStoreCurrentSensorValues_OEE(String CurrentValue)//should run after every 1 second
+{
+    if (OEEArrayIndexCounter >= maxOEEValueDataPoints)
+    {
+        OEEArrayIndexCounter = 0; //reset counter
+    }
+    if (CurrentValue.toFloat() > minActiveValue.toFloat())
+    {
+        OEEArray[OEEArrayIndexCounter] = 1;
+    }
+    else
+    {
+        OEEArray[OEEArrayIndexCounter] = 0;
+    }
+}
 
+void SoftwareStack::calculateOEEValue()//should run after every 5 mins
+{
+    int dataPoints = 0;
+    float OEEPercent = 0.0;
+    for (int i = 0; i < maxOEEValueDataPoints; i++)
+    {
+        dataPoints += OEEArray[i];
+    }
+
+    OEEPercent = (float)dataPoints / (float)maxOEEValueDataPoints;
+    OEEPercent = OEEPercent / 100.0;
+    recentOEEValue = OEEPercent;
+}
 String SoftwareStack::getOEEValue()
 {
-    float v = 0;
     String valStr = "";
-    int totalPoints = 0;
-    for (int i = 0; i < maxDataPoints; i++)
-    {
-        if (SensorVals[i] != String("0,0,0,0,0"))
-        {
-            valStr = StringSeparator(SensorVals[i], ',', 4); //get current value
-            v = v + valStr.toFloat();
-            if (v > minActiveValue.toFloat())
-            {
-                v = v + 1;
-            }
-            else
-            {
-                v = v + 0;
-            }
-            totalPoints++;
-        }
-    }
-    v = v / (float)totalPoints;
-    v = v * 100.0; //convert to percentage
-    if (v > 100)
-    {
-        v = 100; //max bounds
-    }
-    valStr = String(v);
-    if (valStr == String("nan"))
-    {
-        valStr = String("0");
-    }
+    valStr = String(recentOEEValue);
     return valStr;
 }
 String SoftwareStack::getSensorsJSON()

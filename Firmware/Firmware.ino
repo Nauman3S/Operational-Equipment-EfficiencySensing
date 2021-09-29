@@ -7,9 +7,9 @@
 #include "webApp.h"    //Captive Portal webpages
 #include <FS.h>        //ESP32 File System
 
-const long interval = 1000 * 60 * 5;                  // Interval at which to read sensors//5 mintues
-Neotimer dataAcqTimer = Neotimer(interval);           // Set timer's preset
-Neotimer vibrationCalculationsTimer = Neotimer(1000); // Set timer's preset
+const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
+Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
+Neotimer sensorsDataTimer = Neotimer(1000); // Set timer's preset
 
 IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
@@ -107,7 +107,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
     echo.value += "Settings Page Password: " + settingsPass + "<br>";
-    mqttPublish("OEEDevice/dev/config", String("tz;")+timezone); //publish timezone info
+    mqttPublish("OEEDevice/dev/config", String("tz;") + timezone); //publish timezone info
     return String("");
 }
 bool loadAux(const String auxName) //load defaults from data/*.json
@@ -286,12 +286,15 @@ void loop()
     loopLEDHandler();
     if (dataAcqTimer.repeat())
     {
+        ss.calculateOEEValue();
+
         OEEValue = ss.getOEEValue();
         ss.addSensorValue(getTimestamp(), OEEValue, getTemp(tempUnits), getHumid(), getCurrentWatts());
     }
-    if (vibrationCalculationsTimer.repeat())
+    if (sensorsDataTimer.repeat())
     {
         getMPU6050Data();
+        ss.acquireAndStoreCurrentSensorValues_OEE(getCurrentWatts());
     }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {

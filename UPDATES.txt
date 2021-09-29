@@ -1,2 +1,3 @@
-1). Vibration values are not calculated using the formula you gave(2 readings, 1000ms apart and sum the difference of the X,Y & Z Gyro.)
+1). Vibration values are now calculated using the formula you gave(2 readings, 1000ms apart and sum the difference of the X,Y & Z Gyro.)
 2). Now you can easily set timezone from settings page.
+3). OEE Calculations now inferred from the data you shared in the spreadsheet. (one reading every 1 second and calcualtion of oee of past hour every 5 minutes)
