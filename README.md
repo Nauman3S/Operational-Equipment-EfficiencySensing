@@ -174,6 +174,12 @@ The whole system is following the flowchart given below:
 
    ![flow](Circuit/flow.png)
 
+### Changing Timezone
+
+1.  Open Settings tab
+2.  Enter timezone string from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 'TZ database name' column.
+3.  Click Save&Start
+
 ### API Endpoints and HTML URLS
 ```API Endpoints```
 

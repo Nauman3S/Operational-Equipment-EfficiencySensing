@@ -34,24 +34,34 @@ String SoftwareStack::getOEEValue()
 {
     float v = 0;
     String valStr = "";
-    int totalPoints=0;
+    int totalPoints = 0;
     for (int i = 0; i < maxDataPoints; i++)
     {
         if (SensorVals[i] != String("0,0,0,0,0"))
         {
             valStr = StringSeparator(SensorVals[i], ',', 4); //get current value
             v = v + valStr.toFloat();
+            if (v > minActiveValue.toFloat())
+            {
+                v = v + 1;
+            }
+            else
+            {
+                v = v + 0;
+            }
             totalPoints++;
         }
     }
     v = v / (float)totalPoints;
     v = v * 100.0; //convert to percentage
-    if(v>100){
-        v=100;//max bounds
+    if (v > 100)
+    {
+        v = 100; //max bounds
     }
     valStr = String(v);
-    if(valStr==String("nan")){
-        valStr=String("0");
+    if (valStr == String("nan"))
+    {
+        valStr = String("0");
     }
     return valStr;
 }

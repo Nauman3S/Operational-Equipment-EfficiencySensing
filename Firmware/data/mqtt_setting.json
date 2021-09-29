@@ -123,7 +123,7 @@
       "name": "minActiveValue",
       "type": "ACInput",
       "label": "Minimum Active Value",
-      "value": "270"
+      "value": "0.1"
     },
     {
       "name": "js",
