@@ -24,7 +24,7 @@
     {
       "name": "mqttserver",
       "type": "ACInput",
-      "value": "mqtt.thingspeak.com",
+      "value": "broker.hivemq.com",
       "placeholder": "MQTT broker server",
       "label": "MQTT Server"
     },
@@ -45,6 +45,12 @@
       "type": "ACInput",
       "value": "",
       "label": "Channel ID"
+    },
+    {
+      "name": "timezone",
+      "type": "ACInput",
+      "value": "US/Pacific",
+      "label": "Timezone"
     },
     {
       "name": "newline",

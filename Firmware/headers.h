@@ -1,6 +1,7 @@
 String serverName;
 String channelId;
 String userKey;
+String timezone="";
 String apiKey;
 String apid;
 String hostName = "OEE";

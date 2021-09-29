@@ -28,4 +28,5 @@ webencodings
 urllib3
 requests
 idna
+pytz
 

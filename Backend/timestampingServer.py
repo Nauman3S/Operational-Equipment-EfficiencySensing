@@ -1,16 +1,17 @@
 from datetime import datetime
 import paho.mqtt.client as mqtt
 import random
+import pytz
 import time
 
 
 msgV = ""
 topicV = ""
-
+timezone='US/Pacific'
 
 def getTS():
 
-    date_time = datetime.now().strftime("%S;%M;%H;%d;%m;%Y;%f")
+    date_time = datetime.now(tz=pytz.timezone(timezone)).strftime("%S;%M;%H;%d;%m;%Y;%f")
     print(date_time)
     return str(date_time)
 
@@ -25,13 +26,16 @@ def on_connect(client, userdata, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
 
-    global msgV, topicV, voltsData, freqData, appState
+    global msgV, topicV, voltsData, freqData, appState,timezone
     print(msg.topic+" "+str(msg.payload))
     topicV = str(msg.topic)
     msgV = str((msg.payload).decode('utf-8'))
 
     if(topicV == 'OEEDevice/dev/config'):
-        print(msgV)
+        if("tz;" in msgV):
+            t=msgV.split(';')
+            timezone=t[1]
+            print('Timezone Changed to : ',timezone)
 
 
 clientID_prefix = ""

@@ -60,6 +60,9 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     apiKey = args.arg("apikey"); //password
     apiKey.trim();
 
+    timezone = args.arg("timezone"); //timezone
+    timezone.trim();
+
     minActiveValue = args.arg("minActiveValue");
     minActiveValue.trim();
 
@@ -87,13 +90,14 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     // To retrieve the elements of /mqtt_setting, it is necessary to get
     // the AutoConnectAux object of /mqtt_setting.
     File param = FlashFS.open(PARAM_FILE, "w");
-    portal.aux("/mqtt_setting")->saveElement(param, {"mqttserver", "channelid", "userkey", "apikey", "period", "minActiveValue", "ampSensorType", "tempUnits", "hostname", "apPass", "settingsPass"});
+    portal.aux("/mqtt_setting")->saveElement(param, {"mqttserver", "channelid", "userkey", "apikey", "timezone", "period", "minActiveValue", "ampSensorType", "tempUnits", "hostname", "apPass", "settingsPass"});
     param.close();
 
     // Echo back saved parameters to AutoConnectAux page.
     AutoConnectText &echo = aux["parameters"].as<AutoConnectText>();
     echo.value = "Server: " + serverName + "<br>";
     echo.value += "Channel ID: " + channelId + "<br>";
+    echo.value += "Timezone: " + timezone + "<br>";
     echo.value += "Username: " + userKey + "<br>";
     echo.value += "Password: " + apiKey + "<br>";
     echo.value += "Sensor Settings: " + String(upd) + "<br>";
@@ -103,7 +107,7 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) //save the settings
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
     echo.value += "Settings Page Password: " + settingsPass + "<br>";
-
+    mqttPublish("OEEDevice/dev/config", String("tz;")+timezone); //publish timezone info
     return String("");
 }
 bool loadAux(const String auxName) //load defaults from data/*.json
