@@ -6,6 +6,9 @@
 
 Adafruit_MPU6050 mpu;
 uint8_t mpuStatus = 0;
+float mpuReadings[2][6] = {{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}};
+float vibrationValue = 0;
+uint8_t mpuDataPointer = 0;
 void setupMPU6050(void)
 {
 
@@ -101,25 +104,58 @@ int roundint(double r)
     return (int)((r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5));
 }
 
+float sqrtV(float v)
+{
+    return v * v;
+}
+float diff(float b, float a)
+{
+    return b - a;
+}
 String getMPU6050Data()
 {
 
     /* Get new sensor events with the readings */
 
     String dataV = "";
+    
     if (mpuStatus == 1)
     {
         /* Print out the values */
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);
         //dataV = String(a.acceleration.x) + String(",") + String(a.acceleration.y) + String(",") + String(a.acceleration.z) + String(",") + String(g.gyro.x) + String(",") + String(g.gyro.y) + String(",") + String(g.gyro.z) + String(",") + String(temp.temperature);
-        float vibration = g.gyro.x*10 + g.gyro.y*10 + g.gyro.z*10 + a.acceleration.x*10 + a.acceleration.y*10 + a.acceleration.z*10;
-        vibration = vibration * 1.0; //get avg
+        if (mpuDataPointer == 0)
+        {
+            mpuReadings[0][0] = g.gyro.x * 1.0;
+            mpuReadings[0][1] = g.gyro.y * 1.0;
+            mpuReadings[0][2] = g.gyro.z * 1.0;
+            mpuReadings[0][3] = a.acceleration.x * 1.0;
+            mpuReadings[0][4] = a.acceleration.y * 1.0;
+            mpuReadings[0][5] = a.acceleration.z * 1.0;
+            mpuDataPointer++;
+            dataV = String(vibrationValue);
+            
+        }
+        else if (mpuDataPointer == 1)
+        {
+            vibrationValue=0.0;//reset for new value
+            mpuReadings[1][0] = g.gyro.x * 1.0;
+            mpuReadings[1][1] = g.gyro.y * 1.0;
+            mpuReadings[1][2] = g.gyro.z * 1.0;
+            mpuReadings[1][3] = a.acceleration.x * 1.0;
+            mpuReadings[1][4] = a.acceleration.y * 1.0;
+            mpuReadings[1][5] = a.acceleration.z * 1.0;
 
-        int longVib = (int)roundint(vibration);
-        longVib=map(longVib,-150,150,0,255);
-       // Serial.println(longVib);
-        dataV = String(longVib);
+            vibrationValue += sqrtV(diff(mpuReadings[1][0], mpuReadings[0][0]));
+            vibrationValue += sqrtV(diff(mpuReadings[1][1], mpuReadings[0][1]));
+            vibrationValue += sqrtV(diff(mpuReadings[1][2], mpuReadings[0][2]));
+            vibrationValue += sqrtV(diff(mpuReadings[1][3], mpuReadings[0][3]));
+            vibrationValue += sqrtV(diff(mpuReadings[1][4], mpuReadings[0][4]));
+            vibrationValue += sqrtV(diff(mpuReadings[1][5], mpuReadings[0][5]));
+            mpuDataPointer = 0;
+            dataV = String(vibrationValue);
+        }
     }
     else
     {

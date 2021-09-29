@@ -3,12 +3,13 @@
 #include "currentSesnorHandler.h" //current sensor functions
 #include "headers.h"              //all misc. headers and functions
 #include "esp32InternalTime.h"
-#include "MQTTFuncs.h"            //MQTT related functions
-#include "webApp.h"               //Captive Portal webpages
-#include <FS.h>                   //ESP32 File System
+#include "MQTTFuncs.h" //MQTT related functions
+#include "webApp.h"    //Captive Portal webpages
+#include <FS.h>        //ESP32 File System
 
-const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
-Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
+const long interval = 1000 * 60 * 5;                  // Interval at which to read sensors//5 mintues
+Neotimer dataAcqTimer = Neotimer(interval);           // Set timer's preset
+Neotimer vibrationCalculationsTimer = Neotimer(1000); // Set timer's preset
 
 IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) //function to load saved settings
@@ -283,6 +284,10 @@ void loop()
     {
         OEEValue = ss.getOEEValue();
         ss.addSensorValue(getTimestamp(), OEEValue, getTemp(tempUnits), getHumid(), getCurrentWatts());
+    }
+    if (vibrationCalculationsTimer.repeat())
+    {
+        getMPU6050Data();
     }
     if (millis() - lastPub > updateInterval) //publish data to mqtt server
     {
